@@ -3,10 +3,105 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.example</groupId>
-  <artifactId>herokujavasample</artifactId>
+  <artifactId>sf-fb-integration</artifactId>
   <version>1.0-SNAPSHOT</version>
 
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <camelSalesforce.loginUrl>https://test.salesforce.com</camelSalesforce.loginUrl>
+    <camelSalesforce.clientId>3MVG9Vik22TUgUphx4WO6gWq2rgnC2MpYc8XzcWW5iQe_PGUVcH02ZX5C708yNoCiv5oR006zITRKffzz_6NX</camelSalesforce.clientId>
+    <camelSalesforce.clientSecret>489D338A6C04157ADCAD074A267904F5A49DE8846A8A3B22628CDA2366B979C4
+    </camelSalesforce.clientSecret>
+    <camelSalesforce.userName>nubikadmin@columbia-elevator.com.uat</camelSalesforce.userName>
+    <camelSalesforce.password>Nubik2020!!*</camelSalesforce.password>
+    <camel.version>3.2.0</camel.version>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <!-- Camel BOM -->
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-parent</artifactId>
+        <version>${camel.version}</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-main</artifactId>
+    </dependency>
+    <dependency>
+	  <groupId>org.apache.camel</groupId>
+	  <artifactId>camel-ftp</artifactId>
+	</dependency>
+	<dependency>
+	    <groupId>org.apache.camel</groupId>
+	    <artifactId>camel-mail</artifactId>
+	</dependency>
+	<dependency>
+	    <groupId>org.apache.camel</groupId>
+	    <artifactId>camel-univocity-parsers</artifactId>
+	</dependency>
+	<dependency>
+	    <groupId>org.apache.camel</groupId>
+	    <artifactId>camel-salesforce</artifactId>
+	</dependency>
+	<dependency>
+	    <groupId>org.apache.camel</groupId>
+	    <artifactId>camel-quartz</artifactId>
+	</dependency>
+	<dependency>
+	  <groupId>joda-time</groupId>
+	  <artifactId>joda-time</artifactId>
+	  <version>2.10.5</version>
+	</dependency>
+	<dependency>
+	    <groupId>javax.xml.bind</groupId>
+	    <artifactId>jaxb-api</artifactId>
+	    <version>2.3.0-b170201.1204</version>
+	</dependency>
+	<dependency>
+	    <groupId>javax.activation</groupId>
+	    <artifactId>activation</artifactId>
+	    <version>1.1</version>
+	</dependency>
+	<dependency>
+	    <groupId>org.glassfish.jaxb</groupId>
+	    <artifactId>jaxb-runtime</artifactId>
+	    <version>2.3.0-b170127.1453</version>
+	</dependency>
+
+    <!-- logging -->
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-slf4j-impl</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+  </dependencies>
+
   <build>
+    <defaultGoal>install</defaultGoal>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -40,11 +135,26 @@
               </execution>            
           </executions>
       </plugin>
+      <plugin>
+        <groupId>org.apache.camel.maven</groupId>
+        <artifactId>camel-salesforce-maven-plugin</artifactId>
+        <version>2.17.1</version>
+        <configuration>
+          <clientId>${camelSalesforce.clientId}</clientId>
+          <clientSecret>${camelSalesforce.clientSecret}</clientSecret>
+          <userName>${camelSalesforce.userName}</userName>
+          <password>${camelSalesforce.password}</password>
+          <loginUrl default-value="https://test.salesforce.com">${camelSalesforce.loginUrl}</loginUrl> 
+          <version>34.0</version>
+          <includes>
+             <include>Account</include>
+             <!-- <include>Address__c</include>
+             <include>Sales_Document__c</include>
+             <include>Item__c</include> -->
+          </includes>
+        </configuration>
+      </plugin>
     </plugins>
-  </build>  
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-</properties>
+  </build> 
 
 </project>
